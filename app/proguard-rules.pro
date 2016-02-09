@@ -15,3 +15,58 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
+
+
+# Butterknife Library
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+
+# Glide Library
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+
+# Glide OkHttp Integration
+-keep class com.bumptech.glide.integration.okhttp.OkHttpGlideModule
+
+# Saripaar
+
+-keep class com.mobsandgeeks.saripaar.** {*;}
+-keep @com.mobsandgeeks.saripaar.annotation.ValidateUsing class * {*;}
+
+# Parcel library
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keep class org.parceler.Parceler$$Parcels
+
+# esperandro
+-keepnames class de.devland.** { *; }
+-keep class **$$Impl { public *;}
+
+# keep the annotated things annotated
+-keepattributes *Annotation*, EnclosingMethod, Signature, InnerClasses
+
+# for dagger also preserve the interfaces
+# assuming they reside in the sub-package 'preferences' and all end with 'Prefs'
+-keep class prefs.**Prefs { public *;}

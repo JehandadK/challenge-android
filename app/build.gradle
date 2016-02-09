@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.jakewharton.hugo'
 
 android {
     compileSdkVersion 23
@@ -10,17 +12,153 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled false
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+
+        testInstrumentationRunner 'fyber.jehandadk.com.util.AndroidJacocoTestRunner'
+
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'ENDPOINT', '"http://api.fyber.com/"'
+//            buildConfigField 'String', 'API_KEY', '"1c915e3b5d42d05136185030892fbb846c278927"'
+        }
+
+        debug {
+            buildConfigField 'String', 'ENDPOINT', '"http://api.fyber.com/"'
+//            buildConfigField 'String', 'API_KEY', '"1c915e3b5d42d05136185030892fbb846c278927"'
         }
     }
 }
 
 dependencies {
+    def supportLibVer = '23.1.1'
+    def retrofitLibVer = '2.0.0-beta3'
+    def okhttpLibVer = '3.0.1'
+    def daggerLibVer = '2.0.2'
+    def glideVersion = '3.6.1'
+    def junitVersion = '4.12'
+    def mockitoVersion = '1.10.19'
+    def powerMockito = '1.6.2'
+    def hamcrestVersion = '1.3'
+    def runnerVersion = '0.4.1'
+    def espressoVersion = '2.2.1'
+    def googleLibsVer = '8.1.0'
+    def esperandroLibVer = '2.2.0'
+    def dexmakerVer = '1.2'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:' + supportLibVer
+    compile 'com.android.support:design:' + supportLibVer
+    compile 'com.android.support:gridlayout-v7:' + supportLibVer
+    compile 'com.android.support:cardview-v7:' + supportLibVer
+    compile 'com.android.support:recyclerview-v7:' + supportLibVer
+    compile 'com.android.support:support-annotations:' + supportLibVer
+    compile 'commons-codec:commons-codec:1.9' // For Hashing
+
+    compile 'com.mobsandgeeks:android-saripaar:+'
+
+    compile 'de.devland.esperandro:esperandro-api:' + esperandroLibVer
+    apt 'de.devland.esperandro:esperandro:' + esperandroLibVer
+    compile 'de.devland.esperandro:esperandro-gson-addon:' + esperandroLibVer
+
+
+    provided 'javax.annotation:jsr250-api:1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.google.guava:guava:19.0'
+    compile 'com.google.code.gson:gson:2.3'
+
+    compile 'com.squareup.retrofit2:adapter-rxjava:' + retrofitLibVer
+    compile 'com.squareup.retrofit2:retrofit:' + retrofitLibVer
+    compile 'com.squareup.retrofit2:converter-gson:' + retrofitLibVer
+
+    compile 'com.squareup.okhttp3:okhttp:' + okhttpLibVer
+    compile 'com.squareup.okhttp3:logging-interceptor:' + okhttpLibVer
+
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
+
+    compile 'jp.wasabeef:recyclerview-animators:2.1.0'
+    compile "com.google.android.gms:play-services-ads:$googleLibsVer"
+
+    compile 'com.google.dagger:dagger:' + daggerLibVer
+    apt 'com.google.dagger:dagger-compiler:' + daggerLibVer
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    compile "com.github.bumptech.glide:glide:$glideVersion"
+    compile 'com.github.bumptech.glide:okhttp-integration:1.3.1@aar'
+    compile 'com.squareup.okhttp:okhttp:2.6+'
+    compile "com.android.support.test.espresso:espresso-idling-resource:$espressoVersion"
+
+    // Dependencies for local unit tests
+//    testCompile "junit:junit:$junitVersion"
+
+//    androidTestCompile("org.mockito:mockito-all:$mockitoVersion"){
+//        exclude module: 'org.hamcrest:core'
+//        exclude(module: 'hamcrest-all')
+//    }
+//    androidTestCompile "org.hamcrest:hamcrest-all:$hamcrestVersion"
+//    androidTestCompile ("org.powermock:powermock-module-junit4:$powerMockito") {
+//        exclude module: 'junit'
+//    }
+//    androidTestCompile "org.powermock:powermock-api-mockito:$powerMockito"
+
+    // Android Testing Support Library's runner and rules
+    androidTestCompile("com.android.support.test:runner:$runnerVersion") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+
+    androidTestCompile("com.android.support.test:rules:$runnerVersion") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+
+    // Espresso UI Testing dependencies.
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+
+    androidTestCompile("com.android.support.test.espresso:espresso-intents:$espressoVersion") {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
+
+//    androidTestCompile "com.android.support:support-annotations:$supportLibVer"
+    androidTestCompile "com.google.dexmaker:dexmaker:${dexmakerVer}"
+    androidTestCompile "com.google.dexmaker:dexmaker-mockito:${dexmakerVer}"
+
+    testCompile("junit:junit:$junitVersion") {
+//        exclude(module: 'hamcrest-core')
+    }
+    androidTestCompile "org.mockito:mockito-core:${mockitoVersion}"
+    androidTestApt "com.google.dagger:dagger-compiler:" + daggerLibVer
+}
+
+apply plugin: 'me.tatarka.retrolambda'
+
+retrolambda {
+    jvmArgs '-noverify'
 }

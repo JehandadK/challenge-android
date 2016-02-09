@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".offerconfig.ConfigFragment">
+
+    <TextView
+        style="@style/Widget.Config.Label"
+        android:text="@string/uid_label" />
+
+    <EditText
+        android:id="@+id/edt_uid"
+        style="@style/Widget.Config.FormField"
+        android:hint="@string/hint_config_uid" />
+
+    <TextView
+        style="@style/Widget.Config.Label"
+        android:text="@string/apikey_label"
+        grid:layout_row="1" />
+
+    <EditText
+        android:id="@+id/edt_apikey"
+        style="@style/Widget.Config.FormField"
+        android:hint="@string/hint_config_api_key"
+        grid:layout_row="1" />
+
+    <TextView
+        style="@style/Widget.Config.Label"
+        android:text="@string/appid_label"
+        grid:layout_row="2" />
+
+    <EditText
+        android:id="@+id/edt_appid"
+        style="@style/Widget.Config.FormField"
+        android:hint="@string/hint_config_appid"
+        android:inputType="number"
+        grid:layout_row="2" />
+
+    <TextView
+        style="@style/Widget.Config.Label"
+        android:text="@string/pub0_label"
+        grid:layout_row="3" />
+
+    <EditText
+        android:id="@+id/edt_pub0"
+        style="@style/Widget.Config.FormField"
+        android:hint="@string/hint_config_pub0"
+        grid:layout_row="3" />
+
+    <Button
+        android:id="@+id/btn_save_config"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_config_save_config"
+        grid:layout_column="1"
+        grid:layout_gravity="right|end"
+        grid:layout_row="4" />
+</android.support.v7.widget.GridLayout>
+
+
+
