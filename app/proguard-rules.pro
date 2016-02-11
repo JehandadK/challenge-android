@@ -70,3 +70,10 @@
 # for dagger also preserve the interfaces
 # assuming they reside in the sub-package 'preferences' and all end with 'Prefs'
 -keep class prefs.**Prefs { public *;}
+
+
+### Keep Mockito
+-keep class org.mockito.** { *; }
+-keep interface org.mockito.** { *; }
+-keep class com.google.dexmaker.** { *; }
+-keep interface com.google.dexmaker.** { *; }

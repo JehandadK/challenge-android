@@ -13,26 +13,17 @@ public class OffersRequestBuilder {
 
     int appId;
     String apiKey;
-    //The Fyber Application ID for your application.	157	yes
     String uid;
-    //The unique User ID, as used internally in your application.	player1	yes
     String locale;
-    //The locale used for the offer descriptions.	de	yes
     String osVersion;
-    //Current version of the users Operating System, retrieve via android.os.Build.VERSION.RELEASE	4.1.1	yes
     long timestamp;
-    //The time the request is being sent by the device.	1312471066	yes
     String google_ad_id;
-    //The Google advertising ID obtained via AdvertisingIdClient.getAdvertisingIdInfo(mContext).getId();	38400000-8cf0-11bd-b23e-10b96e40000d	yes
     boolean google_ad_id_limited_tracking_enabled;
-    //Retrieves whether the user has limit ad tracking enabled or not. Obtained via AdvertisingIdClient.getAdvertisingIdInfo(mContext).isLimitAdTrackingEnabled()	true or false	Yes
     String ip;
-    //The IP address of the device of your user. If the parameter is not given, the IP address of the request will be used.	212.45.111.17	no
     String pub0;
     int page;
-    //The page of the response set that you are requesting.	1	no
-    String offer_types;//Filter the results based on type of offer.	112	no
-    String ps_time;    //The creation date of the user’s account in your game in Unix Timestamp format.	1312211903	no
+    String offer_types;
+    String ps_time;
     String device = "phone";
 
     private OffersRequestBuilder() {

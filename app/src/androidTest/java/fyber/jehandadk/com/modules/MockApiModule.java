@@ -1,5 +1,7 @@
 package fyber.jehandadk.com.modules;
 
+import org.mockito.Mockito;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -34,7 +36,7 @@ public class MockApiModule {
     @Provides
     @Singleton
     IFyberClient provideFyberService(Retrofit retrofit) {
-        return retrofit.create(IFyberClient.class);
+        return Mockito.mock(IFyberClient.class);
     }
 
     @Provides
