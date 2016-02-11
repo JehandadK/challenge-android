@@ -32,7 +32,7 @@ public interface IFyberClient {
                                             @NonNull @Query("uid") String uid,
                                             @NonNull @Query("os_version") String osVersion,
                                             @NonNull @Query("locale") String locale,
-                                            // @NonNull @Query("hashkey") String hashkey,
+                                            // @NonNull @Query("hashkey") String hashkey, added in interceptor
                                             @NonNull @Query("timestamp") Long timestamp,
                                             @NonNull @Query("google_ad_id") String googleAdId,
                                             @NonNull @Query("google_ad_id_limited_tracking_enabled") Boolean googleAdIdLimitedTrackingEnabled,

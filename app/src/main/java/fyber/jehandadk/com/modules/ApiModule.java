@@ -15,6 +15,7 @@ import dagger.Provides;
 import fyber.jehandadk.com.BuildConfig;
 import fyber.jehandadk.com.api.HashVerifierInterceptor;
 import fyber.jehandadk.com.api.IFyberClient;
+import fyber.jehandadk.com.data.models.OfferListResponse;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

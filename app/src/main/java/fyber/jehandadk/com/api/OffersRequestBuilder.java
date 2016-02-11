@@ -96,7 +96,7 @@ public class OffersRequestBuilder {
     public rx.Observable<OfferListResponse> build(IFyberClient client) {
         //TODO: Validate all params before creating
         // TODO: Should we create a hashKey here? We can but code looks ugly.
-        return client.getOffers(apiKey, "json", appId, uid, osVersion, locale, System.currentTimeMillis() / 1000l,
+        return client.getOffers(apiKey, "json", appId, uid, osVersion, locale, System.currentTimeMillis() / 1000,
                 google_ad_id, google_ad_id_limited_tracking_enabled,
                 ip, pub0, page, offer_types, 0l, device);
     }
