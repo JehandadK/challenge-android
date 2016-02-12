@@ -15,7 +15,10 @@ import dagger.Provides;
 import fyber.jehandadk.com.BuildConfig;
 import fyber.jehandadk.com.api.HashVerifierInterceptor;
 import fyber.jehandadk.com.api.IFyberClient;
+import fyber.jehandadk.com.api.OffersRequestBuilder;
+import fyber.jehandadk.com.data.models.ApiConfig;
 import fyber.jehandadk.com.data.models.OfferListResponse;
+import fyber.jehandadk.com.prefs.IFyberPrefs;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -100,6 +103,30 @@ public class ApiModule {
                     return "";
                 })
                 .cache(1);
+    }
+
+
+    @Named("offer_list")
+    @Singleton
+    @Provides
+    Observable<OfferListResponse> provideOffersList(IFyberClient api, @Named("external_ip") Observable<String> ip, @Named("google_ad_id") Observable<String> adId, IFyberPrefs prefs) {
+        OffersRequestBuilder builder = OffersRequestBuilder.newBuilder();
+        ApiConfig config = prefs.apiConfig();
+        builder.apiKey(config.getApiKey())
+                .appId(config.getAppId())
+                .offerTypes("112").pub0(config.getPub0())
+                .uid(config.getUid())
+                .page(1)
+                .limitedTrackingEnabled(true);
+        return ip.zipWith(adId, (ipStr, adIdStr) -> builder.ip(ipStr).googleAdId(adIdStr).build(api))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .toBlocking().first()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache(1);
+
+
     }
 
 

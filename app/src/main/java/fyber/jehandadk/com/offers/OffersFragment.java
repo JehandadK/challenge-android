@@ -1,6 +1,7 @@
 package fyber.jehandadk.com.offers;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -47,11 +48,43 @@ public class OffersFragment extends ListFragment implements OffersAdapter.ItemCl
     @Inject
     @Named("external_ip")
     Observable<String> ip;
+
     @Inject
     @Named("google_ad_id")
     Observable<String> googleAdId;
-    private int pages = 1;
+    Subscriber subscription = new Subscriber<OfferListResponse>() {
+        @Override
+        public void onCompleted() {
+        }
 
+        @Override
+        public void onError(Throwable e) {
+            setErrMessage(e.getMessage());
+        }
+
+        @Override
+        public void onNext(OfferListResponse offerListResponse) {
+            if (offerListResponse == null) {
+                setErrMessage("No Offers");
+                return;
+            }
+            setData(offerListResponse);
+        }
+    };
+    Subscriber ipAndAdIdSubscription = new Subscriber<OffersRequestBuilder>() {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            setErrMessage(e.getMessage());
+        }
+
+        @Override
+        public void onNext(OffersRequestBuilder offerListResponse) {
+        }
+    };
 
     /**
      * So that all constants related to extras that need to be set or are required by this fragment
@@ -84,49 +117,57 @@ public class OffersFragment extends ListFragment implements OffersAdapter.ItemCl
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        loadData();
+    public void onResume() {
+        super.onResume();
+//        onLoadingStarted();
+        loadPreReq();
+//        response.subscribe(subscription);
     }
 
     @Override
     protected void retry() {
-        loadData();
+        loadPreReq();
     }
 
-    protected void loadData() {
+    protected void loadPreReq() {
         onLoadingStarted();
-        Observable<OffersRequestBuilder> obs = ip.zipWith(googleAdId, (ip, adId) -> {
-            return builder.googleAdId(adId).limitedTrackingEnabled(true).page(pages).ip(ip);
-        }).timeout(5, TimeUnit.SECONDS);
-        obs.map((builder) -> builder.build(api).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<OfferListResponse>() {
-            @Override
-            public void onCompleted() {
-            }
+        // ip and googleAdId are both caches and singletons, no need to worry :)
+        ip.zipWith(googleAdId, (ip, adId) -> {
+            loadData(ip, adId);
+            return builder;
+        })
+                .timeout(5, TimeUnit.SECONDS)
+                .subscribe(ipAndAdIdSubscription);
 
-            @Override
-            public void onError(Throwable e) {
-                setErrMessage(e.getMessage());
-            }
+//        response.subscribe(subscription);
+    }
 
-            @Override
-            public void onNext(OfferListResponse offerListResponse) {
-                setData(offerListResponse);
-            }
-        })).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscription -> isAdded(), throwable -> {
-            setErrMessage(throwable.getMessage());
-        });
+    private void loadData(@NonNull String ip, @NonNull String adId) {
+        builder.googleAdId(adId).limitedTrackingEnabled(true).page(1).ip(ip);
+        builder.build(api)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscription);
     }
 
     private void setData(OfferListResponse data) {
         onLoadingFinished();
-        pages++;
         adapter.setAll(data.getOffers());
         this.data = data;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Could use composite observables
+        subscription.unsubscribe();
+        ipAndAdIdSubscription.unsubscribe();
+
     }
 
     @Override
     public void onItemClicked(Offer Offer) {
 
     }
+
 }
