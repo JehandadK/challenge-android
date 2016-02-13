@@ -113,15 +113,15 @@ public class OffersFragment extends ListFragment implements OffersAdapter.ItemCl
         super.onViewCreated(view, savedInstanceState);
         adapter = new OffersAdapter(this);
         list.setAdapter(adapter);
+        list.setHasFixedSize(false);
         list.setLayoutManager(new StaggeredGridLayoutManager(coloumns, StaggeredGridLayoutManager.VERTICAL));
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        onLoadingStarted();
         loadPreReq();
-//        response.subscribe(subscription);
     }
 
     @Override
@@ -138,8 +138,6 @@ public class OffersFragment extends ListFragment implements OffersAdapter.ItemCl
         })
                 .timeout(5, TimeUnit.SECONDS)
                 .subscribe(ipAndAdIdSubscription);
-
-//        response.subscribe(subscription);
     }
 
     private void loadData(@NonNull String ip, @NonNull String adId) {

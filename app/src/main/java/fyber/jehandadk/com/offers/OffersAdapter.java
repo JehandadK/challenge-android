@@ -46,7 +46,9 @@ public class OffersAdapter extends ListAdapter<OffersAdapter.ProductHolder, Offe
     public void onBindViewHolder(ProductHolder holder, Offer offer) {
         Glide.with(holder.itemView.getContext()).load(offer.getThumbnail().getHires())
                 .placeholder(R.drawable.img_placeholder_loading)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(holder.imgProduct);
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade()
+                .into(holder.imgProduct);
         holder.txtProductAmount.setText(Utils.formatCurrency(offer.getPayout()));
         holder.txtProductTitle.setText(offer.getTitle());
         holder.txtProductTeaser.setText(offer.getTeaser());
