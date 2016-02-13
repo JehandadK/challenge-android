@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             android:src="@drawable/img_placeholder_loading"
             app:heightRatio="1"
             app:widthRatio="1" />
